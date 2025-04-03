@@ -1,22 +1,23 @@
 {
-  "name": "ascii",
+  "name": "objective-society",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "main.js",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "deploy": "vercel --prod"
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ritumantri/objective-society.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ritumantri/objective-society/issues"
+  },
+  "homepage": "https://github.com/ritumantri/objective-society#readme",
   "description": "",
   "dependencies": {
-    "three": "^0.172.0",
-    "vercel": "^39.3.0",
-    "vite": "^6.0.7"
-  },
-  "devDependencies": {
-    "@types/three": "^0.172.0"
+    "three": "^0.175.0"
   }
 }
