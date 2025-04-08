@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>The Object Society</title>
+  <title>The Object-ive Society</title>
   <style>
     @font-face {
       font-family: 'Kalice';
@@ -25,10 +25,7 @@
     }
 
     body {
-      margin: 0;
-      overflow: hidden;
       background: linear-gradient(to bottom, #000000, #FF4D00);
-      height: 100%;
       position: relative;
     }
 
@@ -86,8 +83,13 @@
       width: 150px;
     }
 
-    .object-square {
+    .object-wrapper {
       position: absolute;
+      top: 0;
+      left: 0;
+    }
+
+    .object-square {
       width: 20px;
       height: 20px;
       background-color: #d9d9d9;
@@ -96,6 +98,7 @@
       box-sizing: border-box;
       border: 1px solid transparent;
       transition: background-color 0.3s ease, border-color 0.3s ease;
+      position: absolute;
     }
 
     .object-square:hover {
@@ -122,16 +125,16 @@
       opacity: 0;
       transition: opacity 0.3s ease;
       z-index: 4;
-      width: 300px;
-      height: 300px;
+      width: 400px;
+      height: 400px;
       background-size: contain;
       background-repeat: no-repeat;
       background-position: center;
       pointer-events: none;
     }
 
-    .object-square:hover + .object-label,
-    .object-square:hover ~ .object-shadow {
+    .object-wrapper:hover .object-label,
+    .object-wrapper:hover .object-shadow {
       opacity: 1;
     }
 
@@ -142,7 +145,7 @@
       background: black;
       color: white;
       padding: 20px;
-      max-width: 300px;
+      max-width: 400px;
       font-family: 'Monospace', monospace;
       font-size: 0.9rem;
       line-height: 1.4;
@@ -163,7 +166,7 @@
       left: 20px;
       color: white;
       font-family: 'Monospace', monospace;
-      font-size: 0.9rem;
+      font-size: 1rem;
       text-decoration: underline;
       cursor: pointer;
       z-index: 10;
@@ -175,25 +178,22 @@
   <div id="loader">
     <img id="loader-logo" src="public/logo_white.svg" alt="The Object Society Logo">
     <div id="loader-text">
-      Welcome to the Object-ive Society, a speculative web platform that explores the intricate relationship between objects, memory, and consciousness through the lens of loss. This website serves as a digital archive for objects lost by classmates, reimagining them as "Future Relics" – remnants of personal histories stripped of their immediate materiality and presented as enduring artifacts.
+      Welcome to the Object-ive Society, a speculative digital archive that explores the intricate relationship between objects, memory, and consciousness through the lens of loss. This website serves as a digital archive for objects lost by classmates, reimagining them as "Future Relics" – remnants of personal histories stripped of their immediate materiality and presented as enduring artifacts.
     </div>
     <button id="enter-btn">Enter Society</button>
   </div>
 
   <!-- Main Homepage Content -->
   <div id="homepage">
-    <!-- Logo -->
     <div id="logo">
       <img src="public/logo_white.svg" alt="The Object Society" width="100%">
     </div>
 
-    <!-- About Link -->
-    <div id="about-link">ABOUT</div>
+    <div id="about-link">About</div>
 
-    <!-- About Popup -->
     <div id="about-popup">
-      <p>In Objective Society, the object becomes a vessel—a memory container. Our subjective experiences embed themselves into the physical world, giving objects not only sentimental but structural memory. In the absence of people, ideas, and even language, objects remain. They carry memory forward. This project asks: can we build a better infrastructure for memory? A new kind of museum that honors the lost without imposing the gaze of the archiver?</p>
-      <p>By presenting these items without personal narrative or interpretation, the project creates a space where memory lives outside the subjective. A neutral, digital terrain for relics to simply be—layered, textured, temporally dislocated, and yet preserved.</p>
+      <p>Our whole world is one big Object-ive Civilization, positing that subjective human experiences fundamentally shape physical objects into vessels holding memories. It explores the radical idea of physical memory transference, suggesting that objects inherently carry and transmit memories, potentially becoming the sole repositories of the past in the event of societal collapse and the disappearance of abstract thought. This challenges our current understanding of memory and its reliance on human interpretation.</p>
+      <p>The project questions the efficacy of traditional memory archiving, such as museums, which inherently involve subjective curation and narrative construction. It proposes a re-evaluation of how we preserve and engage with the past by asking: can we develop a better infrastructure for memory? This involves envisioning a novel approach to archiving that minimizes the gaze of the archiver, creating a space where memory lives outside the subjective. A neutral, digital terrain for relics to simply be—layered, textured, temporally dislocated, and yet preserved.</p>
       <div id="close-about">Close</div>
     </div>
   </div>
@@ -240,6 +240,11 @@
         objects.forEach((objId, index) => {
           const pos = positions[index];
 
+          const wrapper = document.createElement('div');
+          wrapper.className = 'object-wrapper';
+          wrapper.style.left = '0';
+          wrapper.style.top = '0';
+
           const square = document.createElement('a');
           square.href = `object.html#${objId}`;
           square.className = 'object-square';
@@ -258,9 +263,10 @@
           shadow.style.left = `${pos.x - 150}px`;
           shadow.style.top = `${pos.y - 150}px`;
 
-          homepage.appendChild(square);
-          homepage.appendChild(label);
-          homepage.appendChild(shadow);
+          wrapper.appendChild(square);
+          wrapper.appendChild(label);
+          wrapper.appendChild(shadow);
+          homepage.appendChild(wrapper);
         });
       }
 
@@ -280,7 +286,7 @@
 
       window.addEventListener('resize', () => {
         if (homepage.style.display === 'block') {
-          document.querySelectorAll('.object-square, .object-label, .object-shadow').forEach(el => el.remove());
+          document.querySelectorAll('.object-wrapper').forEach(el => el.remove());
           createObjectElements();
         }
       });
