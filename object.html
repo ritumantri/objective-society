@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>OBJ001</title>
+    <link rel="stylesheet" href="index.css">
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://unpkg.com/three@v0.163.0/build/three.module.js",
+          "three/addons/": "https://unpkg.com/three@v0.163.0/examples/jsm/"
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <div id="layers-container">
+      <!-- Layer 4: Memory (PNG) -->
+      <div id="memory-layer" class="layer"></div>
+      
+      <!-- Layer 3: Present (PNG) -->
+      <div id="present-layer" class="layer"></div>
+      
+      <!-- Layer 2: Future (3D Model) -->
+      <div id="future-layer" class="layer active"></div>
+      
+      <!-- Layer 1: Past (Grain Effect) -->
+      <div id="past-layer" class="layer"></div>
+    </div>
+    
+    <!-- Left sidebar with object number -->
+    <div id="object-number">
+      <a id="object-id-label" href="/">OBJ001</a>
+    </div>
+    
+    <!-- Right sidebar with toggle buttons -->
+    <div id="toggles">
+      <div class="toggle-item">
+        <input type="checkbox" id="future-toggle" checked>
+        <label for="future-toggle">Future</label>
+      </div>
+      <div class="toggle-item">
+        <input type="checkbox" id="present-toggle">
+        <label for="present-toggle">Present</label>
+      </div>
+      <div class="toggle-item">
+        <input type="checkbox" id="past-toggle">
+        <label for="past-toggle">Past</label>
+      </div>
+      <div class="toggle-item">
+        <input type="checkbox" id="memory-toggle">
+        <label for="memory-toggle">Memory</label>
+      </div>
+    </div>
+
+    <div id="logo">
+      <img src="public/logo_white.svg" alt="The Object Society" width="100%">
+    </div>
+    
+    <!-- Debugging helper -->
+    <script>
+      // Simple console helper to check if toggles are working
+      console.log('HTML loaded');
+      window.addEventListener('load', function() {
+        console.log('Window fully loaded');
+      });
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/grained@0.0.2/grained.min.js"></script>
+    <script type="module" src="main.js"></script>
+  </body>
+</html>

@@ -1,29 +1,290 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="utf-8">
-		<title>Millennium Falcon</title>
+<head>
+  <meta charset="UTF-8" />
+  <title>The Object Society</title>
+  <style>
+    @font-face {
+      font-family: 'Kalice';
+      src: local('Kalice'), url('public/fonts/Kalice_Medium.ttf') format('truetype');
+    }
 
-		<link rel="stylesheet" href="public/index.css">
+    @font-face {
+      font-family: 'Monospace';
+      src: local('Basis Grotesque Mono Pro Regular'), url('public/fonts/basis_grostesque.otf') format('opentype');
+    }
 
-    <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
-    <script type="importmap">
-      {
-        "imports": {
-          "three": "https://unpkg.com/three@v0.163.0/build/three.module.js",
-          "three/addons/": "https://unpkg.com/three@v0.163.0/examples/jsm/"
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      width: 100%;
+      overflow: hidden;
+      font-family: 'Kalice', serif;
+      color: white;
+    }
+
+    body {
+      margin: 0;
+      overflow: hidden;
+      background: linear-gradient(to bottom, #000000, #FF4D00);
+      height: 100%;
+      position: relative;
+    }
+
+    #loader {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(to bottom, #000000, #FF4D00);
+      z-index: 10000;
+      text-align: center;
+      font-family: 'Monospace', monospace;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+
+    #loader-logo {
+      width: 150px;
+      margin-bottom: 2rem;
+    }
+
+    #loader-text {
+      font-size: 1rem;
+      margin-bottom: 1.5rem;
+      max-width: 400px;
+    }
+
+    #enter-btn {
+      border: none;
+      background: none;
+      color: white;
+      font-family: 'Monospace', monospace;
+      font-size: 1rem;
+      text-decoration: underline;
+      cursor: pointer;
+    }
+
+    #homepage {
+      display: none;
+      width: 100%;
+      height: 100%;
+      position: relative;
+    }
+
+    #logo {
+      position: absolute;
+      bottom: 30px;
+      right: 30px;
+      z-index: 10;
+      width: 150px;
+    }
+
+    .object-square {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background-color: #d9d9d9;
+      cursor: pointer;
+      z-index: 5;
+      box-sizing: border-box;
+      border: 1px solid transparent;
+      transition: background-color 0.3s ease, border-color 0.3s ease;
+    }
+
+    .object-square:hover {
+      background-color: black;
+      border-color: #d9d9d9;
+    }
+
+    .object-label {
+      position: absolute;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      color: white;
+      font-family: 'Monospace', monospace;
+      font-size: 14px;
+      z-index: 6;
+      text-align: center;
+      width: 80px;
+      margin-left: -30px;
+      margin-top: 5px;
+    }
+
+    .object-shadow {
+      position: absolute;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      z-index: 4;
+      width: 300px;
+      height: 300px;
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+      pointer-events: none;
+    }
+
+    .object-square:hover + .object-label,
+    .object-square:hover ~ .object-shadow {
+      opacity: 1;
+    }
+
+    #about-popup {
+      position: absolute;
+      bottom: 20px;
+      right: 20px;
+      background: black;
+      color: white;
+      padding: 20px;
+      max-width: 300px;
+      font-family: 'Monospace', monospace;
+      font-size: 0.9rem;
+      line-height: 1.4;
+      z-index: 9999;
+      display: none;
+      text-align: center;
+    }
+
+    #close-about {
+      margin-top: 10px;
+      text-decoration: underline;
+      cursor: pointer;
+    }
+
+    #about-link {
+      position: absolute;
+      bottom: 20px;
+      left: 20px;
+      color: white;
+      font-family: 'Monospace', monospace;
+      font-size: 0.9rem;
+      text-decoration: underline;
+      cursor: pointer;
+      z-index: 10;
+    }
+  </style>
+</head>
+<body>
+  <!-- Loader Screen -->
+  <div id="loader">
+    <img id="loader-logo" src="public/logo_white.svg" alt="The Object Society Logo">
+    <div id="loader-text">
+      Welcome to the Object-ive Society, a speculative web platform that explores the intricate relationship between objects, memory, and consciousness through the lens of loss. This website serves as a digital archive for objects lost by classmates, reimagining them as "Future Relics" – remnants of personal histories stripped of their immediate materiality and presented as enduring artifacts.
+    </div>
+    <button id="enter-btn">Enter Society</button>
+  </div>
+
+  <!-- Main Homepage Content -->
+  <div id="homepage">
+    <!-- Logo -->
+    <div id="logo">
+      <img src="public/logo_white.svg" alt="The Object Society" width="100%">
+    </div>
+
+    <!-- About Link -->
+    <div id="about-link">ABOUT</div>
+
+    <!-- About Popup -->
+    <div id="about-popup">
+      <p>In Objective Society, the object becomes a vessel—a memory container. Our subjective experiences embed themselves into the physical world, giving objects not only sentimental but structural memory. In the absence of people, ideas, and even language, objects remain. They carry memory forward. This project asks: can we build a better infrastructure for memory? A new kind of museum that honors the lost without imposing the gaze of the archiver?</p>
+      <p>By presenting these items without personal narrative or interpretation, the project creates a space where memory lives outside the subjective. A neutral, digital terrain for relics to simply be—layered, textured, temporally dislocated, and yet preserved.</p>
+      <div id="close-about">Close</div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const enterBtn = document.getElementById('enter-btn');
+      const loader = document.getElementById('loader');
+      const homepage = document.getElementById('homepage');
+      const aboutPopup = document.getElementById('about-popup');
+      const closeAbout = document.getElementById('close-about');
+      const aboutLink = document.getElementById('about-link');
+
+      const objects = Array.from({ length: 15 }, (_, i) => `obj${String(i + 1).padStart(3, '0')}`);
+
+      function generateRandomPositions(count) {
+        const positions = [];
+        const padding = 150;
+        const minDistance = 200;
+        const maxTries = 500;
+
+        while (positions.length < count) {
+          let tries = 0;
+          let valid = false;
+          let x, y;
+
+          while (!valid && tries < maxTries) {
+            x = padding + Math.random() * (window.innerWidth - 2 * padding);
+            y = padding + Math.random() * (window.innerHeight - 2 * padding);
+            valid = positions.every(p => Math.hypot(p.x - x, p.y - y) > minDistance);
+            tries++;
+          }
+
+          if (valid) positions.push({ x, y });
+          else break;
         }
+
+        return positions;
       }
-    </script>
-	</head>
-	<body>
-    <div id="heading">
-      <h1>THE MILLENNIUM FALCON</h1>
-      <div class="border"></div>
-    </div>
-    <div id="progress-container">
-      <div id="progress">Engaging Hyperdrive...</div>
-    </div>
-		<script type="module" src="./main.js"></script>
-	</body>
+
+      function createObjectElements() {
+        const positions = generateRandomPositions(objects.length);
+
+        objects.forEach((objId, index) => {
+          const pos = positions[index];
+
+          const square = document.createElement('a');
+          square.href = `object.html#${objId}`;
+          square.className = 'object-square';
+          square.style.left = `${pos.x}px`;
+          square.style.top = `${pos.y}px`;
+
+          const label = document.createElement('div');
+          label.className = 'object-label';
+          label.textContent = objId.toUpperCase();
+          label.style.left = `${pos.x}px`;
+          label.style.top = `${pos.y + 25}px`;
+
+          const shadow = document.createElement('div');
+          shadow.className = 'object-shadow';
+          shadow.style.backgroundImage = `url('public/shadow/${objId}.png')`;
+          shadow.style.left = `${pos.x - 150}px`;
+          shadow.style.top = `${pos.y - 150}px`;
+
+          homepage.appendChild(square);
+          homepage.appendChild(label);
+          homepage.appendChild(shadow);
+        });
+      }
+
+      enterBtn.addEventListener('click', () => {
+        loader.style.display = 'none';
+        homepage.style.display = 'block';
+        createObjectElements();
+      });
+
+      aboutLink.addEventListener('click', () => {
+        aboutPopup.style.display = 'block';
+      });
+
+      closeAbout.addEventListener('click', () => {
+        aboutPopup.style.display = 'none';
+      });
+
+      window.addEventListener('resize', () => {
+        if (homepage.style.display === 'block') {
+          document.querySelectorAll('.object-square, .object-label, .object-shadow').forEach(el => el.remove());
+          createObjectElements();
+        }
+      });
+    });
+  </script>
+</body>
 </html>

@@ -1,0 +1,212 @@
+@font-face {
+  font-family: 'Kalice';
+  src: local('Kalice'), url('public/fonts/Kalice_Medium.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Monospace';
+  src: local('Basis Grotesque Mono Pro Regular'), url('public/fonts/basis_grostesque.otf') format('opentype');
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  font-family: 'Monospace';
+  color: white;
+}
+
+body {
+  margin: 0;
+  overflow: hidden;
+  background: linear-gradient(to bottom, #000000,#FF4D00);
+  height: 100%;
+  position: relative;
+}
+
+#object-id-label {
+  color: inherit;
+}
+
+/* Layers */
+#layers-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+.layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+  pointer-events: none;
+}
+
+.layer.active {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+/* Set proper z-index for all layers to control stacking order */
+#memory-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: visible;
+  pointer-events: none; /* if interactive, set to auto */
+  z-index: 4; /* Top layer */
+}
+
+#memory-layer svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+#present-layer {
+  z-index: 3;
+}
+
+#future-layer {
+  z-index: 2;
+}
+
+#past-layer {
+  z-index: 1; /* Bottom layer - behind future layer */
+  /*background-image: url('public/past/obj001.jpg'); */
+  background-size: cover;
+  background-position: center;
+}
+
+/* Memory and Present layers (PNG images) */
+#memory-layer img, #present-layer img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+/* Past layer (grain effect) */
+#past-layer {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+/* Make sure grained elements are visible */
+.grained {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+.glitch-path {
+  transform: translate(var(--glitch-x, 0), var(--glitch-y, 0));
+  transition: transform 0.3s ease;
+  transition-delay: 0.25s; /* Delay before the transform kicks in */
+}
+
+.present-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+/* Toggle buttons on right side */
+#toggles {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 100;
+  text-align: right;
+}
+
+.toggle-item {
+  display: flex;
+  justify-content: flex-end; /* aligns the whole row to the right */
+  align-items: center;
+  gap: 10px; /* space between label and checkbox */
+  cursor: pointer;
+}
+
+.toggle-item label {
+  order: 1; /* label comes first */
+  letter-spacing: 1px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.toggle-item input[type="checkbox"] {
+  order: 2; /* checkbox comes after label */
+  appearance: none;
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  border: 1px solid #d9d9d9;
+  background-color: #d9d9d9;
+  cursor: pointer;
+  outline: none;
+}
+
+.toggle-item input[type="checkbox"]:checked {
+  background-color: black;
+}
+
+.toggle-item input[type="checkbox"]:hover {
+  border-color: #d9d9d9;
+}
+
+.toggle-item input[type="checkbox"]:focus {
+  box-shadow: 0 0 3px rgba(255,255,255,0.5);
+}
+
+/* Object number on left side */
+#object-number {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  z-index: 10;
+  font-size: 14px;
+  font-family: 'Monospace';
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Logo at bottom right */
+#logo {
+  position: absolute;
+  bottom: 30px;
+  right: 30px;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+/* For the 3D model canvas */
+canvas {
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 0;
+}
